@@ -1,0 +1,15 @@
+## install and load packages using pacman package (silently installs and loads packages)
+pacman::p_load(rmarkdown, 
+               here, 
+               tidyverse, 
+               scales, 
+               MplusAutomation, 
+               rhdf5, 
+               glue,
+               officer, 
+               officedown, 
+               flextable, 
+               cowplot, 
+               rstatix, 
+               ftExtra, 
+               reshape2)
