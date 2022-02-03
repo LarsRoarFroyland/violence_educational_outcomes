@@ -2,7 +2,6 @@
 all_output <- readModels(here("output", "LCA", "model_selection"), quiet = TRUE)
 all_output2 <- readModels(here("output", "LCA", "sensitivity", "Parents_sep"), quiet = TRUE)
 all_output3 <- readModels(here("output", "LCA", "sensitivity", "Severity"), quiet = TRUE)
-all_output4 <- readModels(here("output", "LCA", "sensitivity", "Count"), quiet = TRUE)
 model_step1 <- readModels(here("output", "LCA", "BCH", "step1_2step_bch.out"), quiet = TRUE)
 model_step2 <- readModels(here("output", "LCA", "BCH", "step2_2step_bch.out"), quiet = TRUE)
 
@@ -468,44 +467,6 @@ allFit3 <- enum_extract3 %>%
     TRUE ~ as.character(cmPk_1))) %>% 
   select(2,4,3,9,5:6,10,8,7,15,17)
 
-## Supplementary Table 4: summary table of fit indices - counts
-enum_extract4 <- LatexSummaryTable(all_output4, keepCols=c("Observations", "Title", "Parameters", "LL",
-                                                           "BIC", "aBIC", "BLRT_PValue", "T11_VLMR_PValue"),
-                                   sortBy = "Title")
-
-allFit4 <- enum_extract4 %>% 
-  mutate(Title = str_sub(Title, start = 8, end = 8)) %>% 
-  mutate(aBIC = -2*LL+Parameters*log((Observations+2)/24)) %>% 
-  mutate(CAIC = -2*LL+Parameters*(log(Observations)+1)) %>% 
-  mutate(AWE = -2*LL+2*Parameters*(log(Observations)+1.5)) %>%
-  mutate(BLRT_PValue = case_when(
-    !is.na(BLRT_PValue) ~ p_format(BLRT_PValue, 
-                                   digits = 3,
-                                   accuracy = 0.001,
-                                   leading.zero = FALSE,
-                                   space = TRUE))) %>% 
-  mutate(T11_VLMR_PValue = case_when(
-    !is.na(T11_VLMR_PValue) ~ 
-      p_round(T11_VLMR_PValue, digits = 3) %>%
-      p_format(T11_VLMR_PValue, 
-               digits = 3,
-               accuracy = 0.001,
-               leading.zero = FALSE,
-               space = TRUE))) %>% 
-  mutate(SIC = -.5*BIC) %>% 
-  mutate(expSIC = exp(SIC - max(SIC))) %>% 
-  mutate(expSUM = sum(expSIC)) %>% 
-  mutate(BF_1 = round(exp(SIC-lead(SIC)), digits = 2)) %>%
-  mutate(BF = case_when(
-    BF_1 > 10 ~ "> 10",
-    BF_1 < 0.1 ~ "< 0.10",
-    TRUE ~ as.character(BF_1))) %>% 
-  mutate(cmPk_1 = format(round(expSIC/expSUM, digits = 2), nsmall = 2)) %>% 
-  mutate(cmPk = case_when(
-    cmPk_1 < 0.01 ~ "< .01",
-    TRUE ~ as.character(cmPk_1))) %>% 
-  select(2,4,3,9,5:6,10,8,7,15,17)
-
 ## Supplementary Figure 1: Elbow plot (Nylund-Gibson et al., 2021)
 elbow <- allFit %>% 
   select(2:7) %>%
@@ -527,6 +488,38 @@ for (i in 1:length(all_output)) {
 }
 
 model_results <- model_results %>%
+  mutate(param = ordered(param, levels = unique(param))) %>% 
+  filter(paramHeader == "Thresholds") %>%
+  select(est, model, LatentClass, param) %>%  
+  mutate(prob = (1 / (1 + exp(est))))
+
+## Supplementary Figure 3: Conditional Item Probability Plots (Nylund-Gibson et al., 2021)
+model_results2 <- data.frame()
+
+for (i in 1:length(all_output2)) {
+  temp <- all_output2[[i]]$parameters$unstandardized
+  temp <- data.frame(unclass(temp)) %>%
+    mutate(model = paste0(i, "-Class Model"))
+  model_results2 <- rbind(model_results2, temp)
+}
+
+model_results2 <- model_results2 %>%
+  mutate(param = ordered(param, levels = unique(param))) %>% 
+  filter(paramHeader == "Thresholds") %>%
+  select(est, model, LatentClass, param) %>%  
+  mutate(prob = (1 / (1 + exp(est))))
+
+## Supplementary Figure 4: Conditional Item Probability Plots (Nylund-Gibson et al., 2021)
+model_results3 <- data.frame()
+
+for (i in 1:length(all_output3)) {
+  temp <- all_output3[[i]]$parameters$unstandardized
+  temp <- data.frame(unclass(temp)) %>%
+    mutate(model = paste0(i, "-Class Model"))
+  model_results3 <- rbind(model_results3, temp)
+}
+
+model_results3 <- model_results3 %>%
   mutate(param = ordered(param, levels = unique(param))) %>% 
   filter(paramHeader == "Thresholds") %>%
   select(est, model, LatentClass, param) %>%  
