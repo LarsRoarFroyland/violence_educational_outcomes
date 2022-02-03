@@ -1,15 +1,15 @@
-# violence_educational_outcomes
+<h1 class="larger"><b>Scientific paper</b></h1>
 
-Scientific paper
+<b>Title</b>: 
+<br>
+Interpersonal Victimization during Childhood and Adolescence and Educational Attainment in Young Adulthood
 
-Title: Interpersonal Victimization during Childhood and Adolescence and Educational Attainment in Young Adulthood
+<b>Abstract</b>:
 
-Abstract:
-
-Citation:
+<b>Citation</b>:
 
 Coding of statistical analyses, tables, and figures inspired by the following:
-
-Garber, A. C. (2021). BCH Two-step Auxiliary Variable Integration Using MplusAutomation. PsyArXiv Preprints. https://doi.org/10.31234/osf.io/wmfcj
-<br>
-Nylund-Gibson, K., Garber, A. C., Singh, J., Witkow, M. R., Nishina, A., & Bellmore, A. (2021). The utility of latent class analysis to understand heterogeneity in     youth’s coping strategies: A methodological introduction. OSF Preprints. https://doi.org/10.31219/osf.io/t8ver
+<ul>
+<li>Garber, A. C. (2021). BCH Two-step Auxiliary Variable Integration Using MplusAutomation. PsyArXiv Preprints. https://doi.org/10.31234/osf.io/wmfcj</li>
+<li>Nylund-Gibson, K., Garber, A. C., Singh, J., Witkow, M. R., Nishina, A., & Bellmore, A. (2021). The utility of latent class analysis to understand heterogeneity in youth’s coping strategies: A methodological introduction. OSF Preprints. https://doi.org/10.31219/osf.io/t8ver</li>
+</ul>
